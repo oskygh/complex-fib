@@ -9,14 +9,14 @@ script:
   - docker run oskygh/react-test npm test -- --coverage
 
 after_success:
-  - travis_wait docker build -t oskygh/multi-client ./client
-  - travis_wait docker build -t oskygh/multi-nginx ./nginx
-  - travis_wait docker build -t oskygh/multi-server ./server
-  - travis_wait docker build -t oskygh/multi-worker ./worker
+  - travis_wait 30 docker build -t oskygh/multi-client ./client
+  - travis_wait 30 docker build -t oskygh/multi-nginx ./nginx
+  - travis_wait 30 docker build -t oskygh/multi-server ./server
+  - travis_wait 30 docker build -t oskygh/multi-worker ./worker
   #Log in to the docker CLI
-  - travis_wait echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - travis_wait 30 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   #Take images to docker hub
-  - travis_wait docker push oskygh/multi-client
-  - travis_wait docker push oskygh/multi-nginx
-  - travis_wait docker push oskygh/multi-server
-  - travis_wait docker push oskygh/multi-worker
+  - travis_wait 30 docker push oskygh/multi-client
+  - travis_wait 30 docker push oskygh/multi-nginx
+  - travis_wait 30 docker push oskygh/multi-server
+  - travis_wait 30 docker push oskygh/multi-worker
