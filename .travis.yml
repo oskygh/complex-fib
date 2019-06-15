@@ -5,10 +5,10 @@ services:
 before_install:
   - docker build -t oskygh/react-test -f ./client/Dockerfile.dev ./client
 
-install: travis_wait 30 mvn install
-
 script:
   - docker run oskygh/react-test npm test -- --coverage
+
+install: travis_wait 30 mvn install
 
 after_success:
   - docker build -t oskygh/multi-client ./client
