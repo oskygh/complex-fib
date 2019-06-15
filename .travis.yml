@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t oskygh/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run oskygh/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t oskygh/multi-client ./client
+  - docker build -t oskygh/multi-nginx ./nginx
+  - docker build -t oskygh/multi-server ./server
+  - docker build -t oskygh/multi-worker ./worker
+  #Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  #Take images to docker hub
+  - docker push oskygh/multi-client
+  - docker push oskygh/multi-nginx
+  - docker push oskygh/multi-server
+  - docker push oskygh/multi-worker
